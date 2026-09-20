@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using TradeXpress.Domain.Entities;
 using TradeXpress.Data.Configurations;
+using TradeXpress.Business.Common;
 
 namespace TradeXpress.Data;
 
-public class TradeXpressDbContext : DbContext
+public class TradeXpressDbContext : DbContext, IApplicationDbContext
 {
     public TradeXpressDbContext(DbContextOptions<TradeXpressDbContext> options) : base(options)
     {
