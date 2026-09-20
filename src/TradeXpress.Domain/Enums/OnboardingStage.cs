@@ -1,4 +1,4 @@
-namespace TradeXpress.Domain;
+namespace TradeXpress.Domain.Enums;
 
 public enum OnboardingStage
 {

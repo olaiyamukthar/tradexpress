@@ -1,4 +1,5 @@
-namespace TradeXpress.Domain;
+using TradeXpress.Domain.Enums;
+namespace TradeXpress.Domain.Entities;
 
 public class User
 {
