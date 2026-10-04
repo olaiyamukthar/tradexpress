@@ -3,6 +3,8 @@ using TradeXpress.Data;
 using MediatR;
 using TradeXpress.Business.Auth;
 using TradeXpress.Business.Common;
+using FluentValidation;
+using TradeXpress.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +18,8 @@ builder.Services.AddDbContext<TradeXpressDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterIndividualCommand).Assembly));
 builder.Services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<TradeXpressDbContext>());
+builder.Services.AddValidatorsFromAssembly(typeof(RegisterIndividualCommand).Assembly);
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 var app = builder.Build();
 
@@ -26,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.MapControllers();
 
