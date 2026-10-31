@@ -121,3 +121,20 @@ reconstructing "why is it built this way" from scratch.
   (newer-generated `"openapi": "3.0.4"` specs rejected by older bundled
   swagger-ui-dist); a stale browser cache masked the fix on first reload
   — resolved via a cache-disabled hard reload.
+
+  ## 2026-10-29 — Planning process
+
+- Soft target dates added per roadmap phase (see ROADMAP.md). Soft by
+  design: they keep a no-deadline project moving and are re-baselined at
+  each phase boundary from the actual pace.
+- System-design notes added (SYSTEM_DESIGN_NOTES.md). Each concept is
+  explained while building the feature that needs it, so the knowledge
+  stays tied to real code.
+- Building in public on X, 1–2 posts per week tied to real milestones.
+- Not added to the plan (can be revisited): a fixed 12-week schedule (it
+  conflicts with the learning-first, no-fixed-end-date goal and ignores
+  dependency order), an API gateway (this is a modular monolith with no
+  second service to front), Semantic Kernel (agents will call the
+  Anthropic API directly), and Native AOT benchmarks.
+- Vocabulary rule: the system is event-driven with an outbox. It is not
+  event-sourced, and docs and posts must not claim it is.
