@@ -108,11 +108,13 @@ reconstructing "why is it built this way" from scratch.
   (`ValidationBehavior<TRequest,TResponse>`) rather than called manually
   per-handler, so every current and future command gets validation
   automatically.
-- Global exception-handling middleware added after confirming, live, that
-  an unhandled `DbUpdateException` (Postgres duplicate-key violation)
-  leaked a full internal stack trace — including file paths and DB
-  internals — to the API caller. Fixed with `ProblemDetails`-shaped
-  responses and server-side-only logging via `ILogger`.
+- Global exception-handling middleware added after unhandled exceptions (a
+  Postgres duplicate-key `DbUpdateException`, then a FluentValidation
+  `ValidationException`) came back as 500s with the Development exception
+  page. That page is Development-only, and the Production default is an
+  empty 500 that tells clients nothing. The middleware gives callers a
+  stable contract (400 with field errors for validation failures, generic
+  500 otherwise) and logs the real exception server-side.
 - Unique index added on `User.Email` — first attempt silently generated
   an empty migration (stale build), caught by reading the generated
   `Up()` method before applying it; now a standing habit, not a one-off
@@ -122,7 +124,7 @@ reconstructing "why is it built this way" from scratch.
   swagger-ui-dist); a stale browser cache masked the fix on first reload
   — resolved via a cache-disabled hard reload.
 
-  ## 2026-10-29 — Planning process
+  ## 2026-10-31 — Planning process
 
 - Soft target dates added per roadmap phase (see ROADMAP.md). Soft by
   design: they keep a no-deadline project moving and are re-baselined at
@@ -138,3 +140,19 @@ reconstructing "why is it built this way" from scratch.
   Anthropic API directly), and Native AOT benchmarks.
 - Vocabulary rule: the system is event-driven with an outbox. It is not
   event-sourced, and docs and posts must not claim it is.
+
+  ## 2026-10-31 — CI build workflow
+
+- Added a GitHub Actions workflow (`.github/workflows/build.yml`) that
+  restores and builds the solution in Release configuration on every push
+  and pull request to `main`, ahead of the full Phase 9 pipeline. Chosen
+  because it costs about an hour, builds from a clean checkout on a fresh
+  Linux machine (catching forgotten `git add` files and "works on my
+  machine" problems), and puts a build badge on the README.
+- Known limit: it only proves the solution compiles. There are no tests
+  yet, so it will not catch behavior bugs. Tests and the migrate-then-
+  deploy step attach to this same workflow in Phase 9.
+- Settings: `ubuntu-latest` runner, .NET `8.0.x`, `actions/checkout@v7`,
+  `actions/setup-dotnet@v6`. The action versions are major-version tags
+  and should be rechecked against each action's releases page when the
+  workflow is next edited.

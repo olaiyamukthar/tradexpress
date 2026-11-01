@@ -190,8 +190,9 @@ wraps the entire request pipeline, catching:
   field-level error messages included (safe to expose).
 - Any other unhandled exception → generic `500 Internal Server Error` using
   `ProblemDetails`, with **no internal exception details in the response**
-  (deliberate — a raw EF Core/Postgres exception was confirmed to leak
-  connection/schema details before this middleware existed). The real
+  (deliberate: error responses are an information-disclosure surface. The
+  Development exception page shows stack traces, but only in Development;
+  the middleware keeps the response contract the same in every environment). The real
   exception is logged server-side via `ILogger<ExceptionHandlingMiddleware>`
   (`LogWarning` for validation, `LogError` for everything else) so the
   cause is still discoverable without exposing it to the caller.
@@ -266,6 +267,20 @@ crashing a live app.
   personal/portfolio project; would need addressing (paid license, or
   switching to an MIT-licensed alternative/hand-rolled dispatcher) if
   TradeXpress ever became a commercial product.
+- **Workflow YAML errors only appear after pushing.** A mis-indented `on:`
+  block produced "No event triggers defined in `on`" on the first push.
+  The GitHub Actions extension for VS Code validates workflow files as
+  they're typed, which catches this locally.
+
+## Continuous Integration
+
+`.github/workflows/build.yml` runs on every push and pull request to
+`main`. It checks out the repo on a fresh `ubuntu-latest` runner, installs
+.NET 8, then runs `dotnet restore` and `dotnet build --no-restore
+--configuration Release`. Nothing in the build needs secrets, `.env` or
+User Secrets, so a green run also confirms the repo compiles without any
+local setup. The workflow is build-only for now; tests, migrations and
+deployment are Phase 9 additions to the same file.
 
 ## Git / GitHub
 

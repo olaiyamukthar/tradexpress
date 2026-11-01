@@ -13,7 +13,7 @@ create pressure.
   actual pace.
 - A slipping date moves later phases. It never means skipping the learning
   or the verification steps.
-- Last re-baselined: 2026-10-29.
+- Last re-baselined: 2026-10-31.
 
 | Phase | Soft target |
 |---|---|
@@ -49,6 +49,8 @@ create pressure.
 - [ ] Serilog structured logging
 - [ ] Email verification step
 - [ ] MFA (TOTP, backup codes, step-up on sensitive actions)
+- [x] GitHub Actions workflow: builds the solution on every push and pull
+      request to main
 
 ## Phase 3 — Trading Core
 - [ ] Currency, CurrencyPair (routing config), Wallet entities
@@ -87,7 +89,8 @@ create pressure.
 
 ## Phase 9 — Observability & CI/CD
 - [ ] Health checks, OpenTelemetry (stretch)
-- [ ] GitHub Actions: build/test/migrate-then-deploy pipeline
+- [ ] Extend the existing GitHub Actions build workflow with tests and a
+      migrate-then-deploy step
 - [ ] Unit tests + Testcontainers integration tests
 - [ ] Demo seed data + reset script
 

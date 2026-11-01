@@ -1,5 +1,3 @@
-using System;
-
 namespace TradeXpress.Domain.Entities;
 
 public class CompanyProfile

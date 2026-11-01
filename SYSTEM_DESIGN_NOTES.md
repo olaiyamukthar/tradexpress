@@ -65,6 +65,17 @@ Idea: with multiple app instances, startup-time migration can race, and a
 bad migration would take down a live app. A separate step fails the deploy
 instead.
 
+## Continuous integration: fast feedback from a clean machine
+Where: the GitHub Actions build workflow.
+Idea: every push is built automatically on a fresh machine that has only
+what's committed. The longer the gap between a change and the feedback
+about it, the more expensive the bug is to find. A clean machine also
+removes everything that's only true on your laptop: files you forgot to
+commit, tools you installed by hand, settings in your environment.
+Tradeoff: a build-only pipeline proves compilation and nothing else. Its
+value grows as tests are added to it, and later as a branch rule that
+requires a green run before a pull request can merge.
+
 ## Coming up
 - Phase 2: authentication vs authorization, JWT tradeoffs (stateless but
   hard to revoke), refresh-token rotation, rate-limiting algorithms

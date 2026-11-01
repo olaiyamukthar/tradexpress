@@ -1,6 +1,7 @@
 # TradeXpress
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/olaiyamukthar/tradexpress)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/olaiyamukthar/tradexpress) 
+[![Build](https://github.com/olaiyamukthar/tradexpress/actions/workflows/build.yml/badge.svg)](https://github.com/olaiyamukthar/tradexpress/actions/workflows/build.yml)
 
 A simulated NGN-RMB (and multi-currency) cross-border trading and
 settlement platform — a personal, continuously-developed project built to
@@ -34,7 +35,7 @@ For the full design, reasoning, and current status:
 - [`ARCHITECTURE.md`](./ARCHITECTURE.md) — how it's built, and why
 - [`DECISIONS.md`](./DECISIONS.md) — dated log of significant decisions
 - [`ROADMAP.md`](./ROADMAP.md) — what's built, what's next
-- [DeepWiki](https://deepwiki.com/olaiyamukthar/tradexpress) — auto-generated
+- [`DeepWiki`](https://deepwiki.com/olaiyamukthar/tradexpress) — auto-generated
   snapshot of the code structure (may lag the latest commit; the docs above
   are the source of truth)
 - [`SYSTEM_DESIGN_NOTES.md`](./SYSTEM_DESIGN_NOTES.md) — the system-design
