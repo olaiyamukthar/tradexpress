@@ -16,10 +16,12 @@ public class TradeXpressDbContext : DbContext, IApplicationDbContext
         modelBuilder.ApplyConfiguration(new UserConfiguration());
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
         modelBuilder.ApplyConfiguration(new AccountUserConfiguration());
+        modelBuilder.ApplyConfiguration(new CompanyProfileConfiguration());
     }
 
     // DbSet properties go here
     public DbSet<User> Users { get; set; }
     public DbSet<AccountUser> AccountUsers { get; set; }
     public DbSet<Account> Accounts { get; set; }
+    public DbSet<CompanyProfile> CompanyProfiles { get; set; }
 }
