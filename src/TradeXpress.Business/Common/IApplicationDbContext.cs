@@ -1,5 +1,5 @@
-using TradeXpress.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using TradeXpress.Domain.Entities;
 
 namespace TradeXpress.Business.Common;
 

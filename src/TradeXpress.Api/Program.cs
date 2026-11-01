@@ -1,23 +1,28 @@
-using Microsoft.EntityFrameworkCore;
-using TradeXpress.Data;
+using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using TradeXpress.Api.Middleware;
 using TradeXpress.Business.Auth;
 using TradeXpress.Business.Common;
-using FluentValidation;
-using TradeXpress.Api.Middleware;
+using TradeXpress.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => c.SupportNonNullableReferenceTypes());
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<TradeXpressDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegisterIndividualCommand).Assembly));
-builder.Services.AddScoped<IApplicationDbContext>(sp => sp.GetRequiredService<TradeXpressDbContext>());
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(RegisterIndividualCommand).Assembly)
+);
+builder.Services.AddScoped<IApplicationDbContext>(sp =>
+    sp.GetRequiredService<TradeXpressDbContext>()
+);
 builder.Services.AddValidatorsFromAssembly(typeof(RegisterIndividualCommand).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
@@ -35,4 +40,3 @@ app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();
-

@@ -9,7 +9,10 @@ public class ExceptionHandlingMiddleware
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+    public ExceptionHandlingMiddleware(
+        RequestDelegate next,
+        ILogger<ExceptionHandlingMiddleware> logger
+    )
     {
         _next = next;
         _logger = logger;
@@ -29,12 +32,12 @@ public class ExceptionHandlingMiddleware
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 
             var problemDetails = new ValidationProblemDetails(
-                ex.Errors
-                    .GroupBy(e => e.PropertyName)
-                    .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray()))
+                ex.Errors.GroupBy(e => e.PropertyName)
+                    .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray())
+            )
             {
                 Status = (int)HttpStatusCode.BadRequest,
-                Title = "One or more validation errors occurred."
+                Title = "One or more validation errors occurred.",
             };
 
             await context.Response.WriteAsJsonAsync(problemDetails);
@@ -50,7 +53,7 @@ public class ExceptionHandlingMiddleware
             {
                 Status = (int)HttpStatusCode.InternalServerError,
                 Title = "An unexpected error occurred.",
-                Detail = "Please try again later."
+                Detail = "Please try again later.",
             };
 
             await context.Response.WriteAsJsonAsync(problemDetails);

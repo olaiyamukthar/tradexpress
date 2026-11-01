@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <ItemGroup>
     <ProjectReference Include="..\TradeXpress.Domain\TradeXpress.Domain.csproj" />
     <ProjectReference Include="..\TradeXpress.Business\TradeXpress.Business.csproj" />
@@ -10,5 +9,4 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
 </Project>

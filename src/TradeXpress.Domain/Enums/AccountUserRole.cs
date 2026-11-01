@@ -4,5 +4,5 @@ public enum AccountUserRole
 {
     Owner,
     Trader,
-    Viewer
+    Viewer,
 }

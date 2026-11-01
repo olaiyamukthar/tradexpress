@@ -1,4 +1,5 @@
 using TradeXpress.Domain.Enums;
+
 namespace TradeXpress.Domain.Entities;
 
 public class Account

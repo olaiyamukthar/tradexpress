@@ -7,5 +7,5 @@ public enum OnboardingStage
     KycSubmitted,
     KycApproved,
     KycRejected,
-    Active
+    Active,
 }

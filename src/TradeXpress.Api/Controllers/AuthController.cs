@@ -21,4 +21,11 @@ public class AuthController : ControllerBase
         var userId = await _mediator.Send(command);
         return Ok(new { userId });
     }
+
+    [HttpPost("register/company")]
+    public async Task<IActionResult> RegisterCompany(RegisterCompanyCommand command)
+    {
+        var userId = await _mediator.Send(command);
+        return Ok(new { userId });
+    }
 }

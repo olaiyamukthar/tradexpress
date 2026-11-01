@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using TradeXpress.Business.Common;
 using TradeXpress.Domain.Entities;
 using TradeXpress.Domain.Enums;
-using TradeXpress.Business.Common;
 
 namespace TradeXpress.Business.Auth;
 
@@ -15,7 +15,10 @@ public class RegisterIndividualCommandHandler : IRequestHandler<RegisterIndividu
         _dbContext = dbContext;
     }
 
-    public async Task<Guid> Handle(RegisterIndividualCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(
+        RegisterIndividualCommand request,
+        CancellationToken cancellationToken
+    )
     {
         var hasher = new PasswordHasher<User>();
         var passwordHash = hasher.HashPassword(null!, request.Password);

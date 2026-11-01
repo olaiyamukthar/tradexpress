@@ -104,6 +104,10 @@ create pressure.
       (currently none)
 - [ ] Max lengths on text columns in existing tables (new tables get them
       from the start)
+- [ ] Case-insensitive uniqueness for `User.Email` and
+      `CompanyProfile.RegistrationNumber` (Postgres unique indexes on text
+      are case-sensitive; normalize on write or use a case-insensitive
+      collation/`citext`)
 
 ## Working agreements
 

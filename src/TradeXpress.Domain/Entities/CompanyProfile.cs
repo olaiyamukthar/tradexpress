@@ -10,7 +10,13 @@ public class CompanyProfile
     public string RegisteredAddress { get; private set; }
     public DateTime CreatedAt { get; private set; }
 
-    public CompanyProfile(Guid accountId, string companyName, string registrationNumber, string taxId, string registeredAddress)
+    public CompanyProfile(
+        Guid accountId,
+        string companyName,
+        string registrationNumber,
+        string taxId,
+        string registeredAddress
+    )
     {
         Id = Guid.NewGuid();
         AccountId = accountId;

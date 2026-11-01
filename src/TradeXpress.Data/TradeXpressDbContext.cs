@@ -1,15 +1,14 @@
 using Microsoft.EntityFrameworkCore;
-using TradeXpress.Domain.Entities;
-using TradeXpress.Data.Configurations;
 using TradeXpress.Business.Common;
+using TradeXpress.Data.Configurations;
+using TradeXpress.Domain.Entities;
 
 namespace TradeXpress.Data;
 
 public class TradeXpressDbContext : DbContext, IApplicationDbContext
 {
-    public TradeXpressDbContext(DbContextOptions<TradeXpressDbContext> options) : base(options)
-    {
-    }
+    public TradeXpressDbContext(DbContextOptions<TradeXpressDbContext> options)
+        : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
