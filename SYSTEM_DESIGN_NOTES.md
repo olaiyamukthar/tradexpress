@@ -76,6 +76,28 @@ Tradeoff: a build-only pipeline proves compilation and nothing else. Its
 value grows as tests are added to it, and later as a branch rule that
 requires a green run before a pull request can merge.
 
+## Normalize input the same way for checking and storing
+Where: company text fields are trimmed in both the uniqueness check and
+the handler.
+Idea: a check and the insert must see the same value. If the check
+compares raw input while storage trims it, a padded duplicate passes the
+check and either collides at the index (a 500 instead of a 400) or slips
+in as a near-duplicate.
+Deferred: case-insensitive uniqueness (roadmap follow-up).
+
+## Validation cascades: later rules run after earlier ones fail
+Where: `CascadeMode.Stop` on rules that dereference the value.
+Idea: by default FluentValidation runs every rule even after one fails.
+With null input, a later rule that calls a method on the value throws
+instead of reporting a validation error. Stop the cascade wherever later
+rules assume earlier ones passed.
+
+## The API schema is documentation, validators are enforcement
+Where: Swagger shows field nullability; FluentValidation rejects bad input.
+Idea: generated docs can be loose or wrong without changing behavior, so
+correctness never depends on them. Keep them accurate for the people
+reading them, and keep the rules in code.
+
 ## Coming up
 - Phase 2: authentication vs authorization, JWT tradeoffs (stateless but
   hard to revoke), refresh-token rotation, rate-limiting algorithms

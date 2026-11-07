@@ -293,15 +293,16 @@ throughout local development.
 
 ## Status
 
-Individual registration is the first fully completed, verified vertical
-slice: Domain entities (`User`, `Account`, `AccountUser`) → Fluent API
-configurations (including a composite key on `AccountUser` and a unique
-index on `User.Email`) → `IApplicationDbContext` abstraction →
-`RegisterIndividualCommand`/`Validator`/`Handler` → `AuthController` →
-verified end-to-end via curl/Swagger and confirmed in Postgres via DBeaver.
-Validation and global error handling are wired and confirmed working
-(tested against both a duplicate-email case and a weak-password case).
+Completed and verified vertical slices: Individual registration and
+Company registration. Both run through the same pipeline: controller,
+MediatR command, `ValidationBehavior` (FluentValidation), handler,
+`IApplicationDbContext`, Postgres. Company registration adds the
+`CompanyProfile` entity (unique `AccountId` and `RegistrationNumber`,
+length-limited columns). Global error handling and a GitHub Actions build
+workflow (restore and Release build on every push and pull request to
+`main`) are in place.
 
-Not yet built: Company registration, login/JWT, Serilog (structured
-logging beyond the current `ILogger` calls in the exception middleware),
-RabbitMQ, and the frontend (intentionally deferred — see Overview).
+Not yet built: login/JWT, refresh tokens, email verification, MFA, Serilog
+(structured logging beyond the `ILogger` calls in the exception
+middleware), RabbitMQ, and the frontend (intentionally deferred, see
+Overview).

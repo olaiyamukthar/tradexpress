@@ -40,8 +40,8 @@ create pressure.
 - [x] Individual registration, verified end-to-end
 - [x] Validation pipeline behavior (FluentValidation + MediatR)
 - [x] Global error handling (ProblemDetails middleware)
-- [ ] Company registration (`CompanyProfile` entity done; Data layer,
-      command/validator/handler and endpoint next)
+- [x] Company registration (`CompanyProfile`, command/validator/handler,
+      endpoint)
 - [ ] Map unique-constraint violations from concurrent duplicate requests
       to 409 Conflict (currently a generic 500)
 - [ ] Login + JWT issuance
@@ -108,6 +108,8 @@ create pressure.
       `CompanyProfile.RegistrationNumber` (Postgres unique indexes on text
       are case-sensitive; normalize on write or use a case-insensitive
       collation/`citext`)
+- [ ] Share user-field validation rules (email, password, names) between
+      the Individual and Company validators (currently duplicated)
 
 ## Working agreements
 

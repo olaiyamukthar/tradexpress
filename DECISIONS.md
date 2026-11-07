@@ -156,3 +156,27 @@ reconstructing "why is it built this way" from scratch.
   `actions/setup-dotnet@v6`. The action versions are major-version tags
   and should be rechecked against each action's releases page when the
   workflow is next edited.
+
+  ## 2026-10-31 — Company registration
+
+- Company registration is its own command, validator, handler and endpoint
+  (`POST /api/auth/register/company`). It needed no change to
+  `Program.cs`, because MediatR and FluentValidation register by scanning
+  the Business assembly.
+- `CompanyProfile` is a separate table, one-to-one with `Account`, enforced
+  by a unique index on `AccountId`. `RegistrationNumber` is also unique.
+  Individual accounts simply have no profile row, instead of carrying empty
+  company columns.
+- Text columns have max lengths from the start, and validator limits match
+  the column limits, so oversized input becomes a clean 400 instead of a
+  database exception at `SaveChanges`.
+- Company text fields are trimmed in both the uniqueness check and the
+  handler, so the check and the insert see the same value. Case-insensitive
+  uniqueness is deferred (roadmap follow-up).
+- Validator rules use `CascadeMode.Stop` where a later rule assumes an
+  earlier one passed. Found with a null registration number: the
+  uniqueness rule's `Trim()` ran after `NotEmpty()` failed and threw a
+  `NullReferenceException`.
+- Swagger: enabled `SupportNonNullableReferenceTypes()`, so schemas show
+  non-nullable strings. The validators remain the enforcement; the schema
+  is documentation.
