@@ -98,6 +98,14 @@ Idea: generated docs can be loose or wrong without changing behavior, so
 correctness never depends on them. Keep them accurate for the people
 reading them, and keep the rules in code.
 
+## Runtime lifecycle is part of the design
+Where: the .NET 8 to .NET 10 upgrade.
+Idea: runtimes and packages have support windows. Past the end of one, an
+app still runs but gets no security patches. The upgrade cost grows with
+the codebase, so the cheap time to do it is while the codebase is small.
+Practice: upgrade on a branch, let CI prove the build, and use a throwaway
+migration to prove the schema didn't change.
+
 ## Coming up
 - Phase 2: authentication vs authorization, JWT tradeoffs (stateless but
   hard to revoke), refresh-token rotation, rate-limiting algorithms

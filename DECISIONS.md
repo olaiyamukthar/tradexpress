@@ -180,3 +180,19 @@ reconstructing "why is it built this way" from scratch.
 - Swagger: enabled `SupportNonNullableReferenceTypes()`, so schemas show
   non-nullable strings. The validators remain the enforcement; the schema
   is documentation.
+
+## 2026-11-06 — Upgrade to .NET 10
+
+- Moved all five projects from net8.0 to net10.0 because support for
+  .NET 8 ends on 2026-11-10. Done on a branch and merged through a pull
+  request, so CI proved the build on a clean machine before it reached
+  `main`.
+- Packages moved to 10.x (EF Core, Npgsql provider, Identity), `dotnet-ef`
+  was updated to match, and the CI workflow now installs `10.0.x`.
+- Verified the schema was unchanged with a throwaway migration: its `Up()`
+  was empty. The only snapshot differences were the version stamp and a
+  new format for `ToTable` calls.
+- Removed the unused `Microsoft.AspNetCore.OpenApi` package, a leftover
+  from the project template, since Swagger comes from Swashbuckle.
+- Earlier entries that mention .NET 8 are historical and are left as
+  written.

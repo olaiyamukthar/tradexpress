@@ -13,7 +13,7 @@ mechanics (fake money, real engineering).
 
 ## What this demonstrates
 
-- Clean Architecture (.NET 8) with strict dependency boundaries
+- Clean Architecture (.NET 10) with strict dependency boundaries
 - CQRS via MediatR, with cross-cutting concerns (validation, error
   handling) implemented as pipeline behaviors rather than per-handler code
 - EF Core Code-First against PostgreSQL, Fluent API configuration
@@ -25,7 +25,7 @@ mechanics (fake money, real engineering).
 
 ## Tech stack
 
-.NET 8 · PostgreSQL (Neon/Supabase) · EF Core · MediatR · FluentValidation
+.NET 10 · PostgreSQL (Neon/Supabase) · EF Core · MediatR · FluentValidation
 · Kafka · RabbitMQ (planned) · Redis · Docker · Angular (planned, later
 phase)
 
@@ -43,7 +43,7 @@ For the full design, reasoning, and current status:
 
 ## Running locally
 
-Prerequisites: .NET 8 SDK, Docker Desktop, `dotnet-ef` global tool.
+Prerequisites: .NET 10 SDK, Docker Desktop, `dotnet-ef` global tool.
 
 ```bash
 # start local infrastructure (Postgres, Redis, Kafka, Kafdrop)

@@ -85,6 +85,14 @@ compared directly:
   Issues below for a compatibility bug hit with it).
 - `dotnet-ef` global tool (EF Core migrations).
 
+## Runtime and Package Versions
+
+Targets .NET 10 (an LTS release). Migrated from .NET 8 on 2026-11-06,
+ahead of .NET 8's end of support on 2026-11-10. EF Core, the Npgsql
+provider and the Identity package are on 10.x, and the `dotnet-ef` global
+tool must match the EF Core major version. Adding packages with no version
+pinned installs the latest, which matches the target framework.
+
 ## Solution Structure
 
 Clean Architecture, five projects under `src/`, matching a Controllers /
@@ -276,7 +284,7 @@ crashing a live app.
 
 `.github/workflows/build.yml` runs on every push and pull request to
 `main`. It checks out the repo on a fresh `ubuntu-latest` runner, installs
-.NET 8, then runs `dotnet restore` and `dotnet build --no-restore
+.NET 10, then runs `dotnet restore` and `dotnet build --no-restore
 --configuration Release`. Nothing in the build needs secrets, `.env` or
 User Secrets, so a green run also confirms the repo compiles without any
 local setup. The workflow is build-only for now; tests, migrations and
