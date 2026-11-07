@@ -17,7 +17,7 @@ namespace TradeXpress.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -44,7 +44,7 @@ namespace TradeXpress.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("TradeXpress.Domain.Entities.AccountUser", b =>
@@ -61,7 +61,7 @@ namespace TradeXpress.Data.Migrations
 
                     b.HasKey("UserId", "AccountId");
 
-                    b.ToTable("AccountUsers");
+                    b.ToTable("AccountUsers", (string)null);
                 });
 
             modelBuilder.Entity("TradeXpress.Domain.Entities.CompanyProfile", b =>
@@ -104,7 +104,7 @@ namespace TradeXpress.Data.Migrations
                     b.HasIndex("RegistrationNumber")
                         .IsUnique();
 
-                    b.ToTable("CompanyProfiles");
+                    b.ToTable("CompanyProfiles", (string)null);
                 });
 
             modelBuilder.Entity("TradeXpress.Domain.Entities.User", b =>
@@ -141,7 +141,7 @@ namespace TradeXpress.Data.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 #pragma warning restore 612, 618
         }
