@@ -1,6 +1,7 @@
 using System.Net;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using TradeXpress.Business.Common;
 
 namespace TradeXpress.Api.Middleware;
 
@@ -26,7 +27,11 @@ public class ExceptionHandlingMiddleware
         }
         catch (ValidationException ex)
         {
-            _logger.LogWarning(ex, "Validation failed for request {Path}", context.Request.Path);
+            _logger.LogWarning(
+                "Validation failed for request {Path}. Errors: {Errors}",
+                context.Request.Path,
+                string.Join(", ", ex.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}"))
+            );
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -38,6 +43,26 @@ public class ExceptionHandlingMiddleware
             {
                 Status = (int)HttpStatusCode.BadRequest,
                 Title = "One or more validation errors occurred.",
+            };
+
+            await context.Response.WriteAsJsonAsync(problemDetails);
+        }
+        catch (AuthenticationFailedException ex)
+        {
+            _logger.LogWarning(
+                "Authentication failed for request {Path}. Reason: {Reason}",
+                context.Request.Path,
+                ex.Message
+            );
+
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+
+            var problemDetails = new ProblemDetails
+            {
+                Status = (int)HttpStatusCode.Unauthorized,
+                Title = "Authentication failed.",
+                Detail = ex.Message,
             };
 
             await context.Response.WriteAsJsonAsync(problemDetails);

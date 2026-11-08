@@ -3,6 +3,9 @@
     <ProjectReference Include="..\TradeXpress.Domain\TradeXpress.Domain.csproj" />
     <ProjectReference Include="..\TradeXpress.Business\TradeXpress.Business.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.23.0" />
+  </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

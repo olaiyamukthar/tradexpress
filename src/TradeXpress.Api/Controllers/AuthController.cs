@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TradeXpress.Business.Auth;
 
@@ -27,5 +28,21 @@ public class AuthController : ControllerBase
     {
         var userId = await _mediator.Send(command);
         return Ok(new { userId });
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginCommand command)
+    {
+        var loginResult = await _mediator.Send(command);
+        return Ok(loginResult);
+    }
+
+    [HttpGet("me")]
+    [Authorize]
+    public IActionResult GetCurrentUser()
+    {
+        var userId = User.FindFirst("sub")?.Value;
+        var email = User.FindFirst("email")?.Value;
+        return Ok(new { userId, email });
     }
 }
