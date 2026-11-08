@@ -106,6 +106,26 @@ the codebase, so the cheap time to do it is while the codebase is small.
 Practice: upgrade on a branch, let CI prove the build, and use a throwaway
 migration to prove the schema didn't change.
 
+## Stateless tokens: fast to verify, hard to revoke
+Where: JWT access tokens, 15-minute lifetime.
+Idea: the Api verifies a token by checking its signature, with no database
+lookup, so it scales easily. The cost is that a token can't be taken back
+before it expires. Short lifetimes limit the damage from a stolen one, and
+revocable refresh tokens cover the convenience gap. Tokens are signed, not
+encrypted, so claims must never carry secrets.
+
+## Failures shouldn't reveal what exists
+Where: login returns the same 401 for unknown email and wrong password.
+Idea: different messages let anyone probe which emails are registered.
+Timing leaks the same fact, so an unknown email does the same expensive
+password check against a dummy hash. Matching the response is half the
+fix; matching the work is the other half.
+
+## Fail fast on bad configuration
+Where: the Api refuses to start without a valid signing key.
+Idea: a missing secret should stop the app at startup with a clear
+message, not surface later as a cryptic error on the first request.
+
 ## Coming up
 - Phase 2: authentication vs authorization, JWT tradeoffs (stateless but
   hard to revoke), refresh-token rotation, rate-limiting algorithms

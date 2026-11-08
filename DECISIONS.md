@@ -196,3 +196,33 @@ reconstructing "why is it built this way" from scratch.
   from the project template, since Swagger comes from Swashbuckle.
 - Earlier entries that mention .NET 8 are historical and are left as
   written.
+
+## 2026-11-08 — Login with JWT
+
+- Login is a MediatR command like registration (`POST /api/auth/login`),
+  returning an access token and its expiry. Access token only for now;
+  refresh tokens are the next roadmap item.
+- Business defines `IJwtTokenService`, and `JwtTokenService` in
+  Infrastructure implements it (the first real use of that project).
+  Lifetime is 15 minutes, configurable. Tokens are HS256-signed with a key
+  from User Secrets locally and the `Jwt__SigningKey` environment variable
+  in production.
+- Claims are limited to subject (user id), email and a unique token id.
+  Which accounts a user can act on is checked against `AccountUser` per
+  request, not stored in the token.
+- A failed login returns the same 401 whether the email is unknown or the
+  password is wrong. An unknown email still verifies the password against
+  a dummy hash, so both paths do the same work.
+- Failure is signalled with `AuthenticationFailedException`, which the
+  exception middleware maps to 401. Expected failures use the same
+  exception-to-ProblemDetails mechanism as validation errors; the planned
+  409 for unique violations will use it too.
+- Startup fails fast if the signing key is missing or shorter than 32
+  bytes.
+- Validation checks issuer, audience, signature and lifetime.
+  `MapInboundClaims = false` keeps the claim names `sub` and `email`.
+  `ClockSkew` is zero, verified with a one-minute lifetime.
+- Known gaps: a protected endpoint called without a valid token returns a
+  bare 401 with an empty body (a challenge response, not an exception, so
+  the exception middleware never sees it). Swagger has no Authorize button
+  yet. `/api/auth/me` is a test endpoint.

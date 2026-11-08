@@ -44,13 +44,17 @@ create pressure.
       endpoint)
 - [ ] Map unique-constraint violations from concurrent duplicate requests
       to 409 Conflict (currently a generic 500)
-- [ ] Login + JWT issuance
+- [x] Login + JWT issuance
 - [ ] Refresh token management
 - [ ] Serilog structured logging
 - [ ] Email verification step
 - [ ] MFA (TOTP, backup codes, step-up on sensitive actions)
 - [x] GitHub Actions workflow: builds the solution on every push and pull
       request to main
+- [ ] Rate limiting on login and registration (per-IP, to slow brute force)
+- [ ] Return ProblemDetails for 401/403 responses produced by the JWT
+      middleware (currently empty bodies)
+- [ ] Swagger: bearer-token support (Authorize button)
 
 ## Phase 3 — Trading Core
 - [ ] Currency, CurrencyPair (routing config), Wallet entities

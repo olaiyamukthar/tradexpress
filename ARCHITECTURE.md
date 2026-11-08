@@ -205,6 +205,20 @@ wraps the entire request pipeline, catching:
   (`LogWarning` for validation, `LogError` for everything else) so the
   cause is still discoverable without exposing it to the caller.
 
+## Authentication
+
+Login (`POST /api/auth/login`) verifies the password with ASP.NET Core
+Identity's `PasswordHasher`, then asks `IJwtTokenService` (defined in
+Business, implemented by `JwtTokenService` in Infrastructure) for a signed
+JWT. Settings live in `JwtSettings` (section `Jwt`), shared by the token
+service and the Api's bearer validation so both always agree. The Api
+rejects startup if `Jwt:SigningKey` is missing or under 32 bytes.
+
+Protected endpoints use `[Authorize]`; the token's `sub` claim is the user
+id. Unknown email and wrong password produce the same 401, and an unknown
+email still performs a password verification against a dummy hash so the
+two paths take comparable time.
+
 ## Response Shape
 
 Errors: `ProblemDetails` / `ValidationProblemDetails` (RFC 7807), matching
@@ -255,6 +269,9 @@ crashing a live app.
   `builder.Configuration.GetConnectionString(...)` call works unchanged
   across dev/prod, since the app never needs to know which config source a
   value came from.
+- **JWT signing key**: `Jwt:SigningKey` in User Secrets locally (generated
+  with `openssl rand -base64 48`) and the `Jwt__SigningKey` environment
+  variable in production. `appsettings.json` keeps the key empty.
 
 ## Known Issues / Gotchas
 
@@ -301,16 +318,14 @@ throughout local development.
 
 ## Status
 
-Completed and verified vertical slices: Individual registration and
-Company registration. Both run through the same pipeline: controller,
+Completed and verified vertical slices: Individual registration, Company
+registration and login. All run through the same pipeline: controller,
 MediatR command, `ValidationBehavior` (FluentValidation), handler,
-`IApplicationDbContext`, Postgres. Company registration adds the
-`CompanyProfile` entity (unique `AccountId` and `RegistrationNumber`,
-length-limited columns). Global error handling and a GitHub Actions build
-workflow (restore and Release build on every push and pull request to
-`main`) are in place.
+`IApplicationDbContext`, Postgres. Login issues 15-minute JWT access
+tokens, validated by bearer authentication in the Api. Global error
+handling and a GitHub Actions build workflow are in place.
 
-Not yet built: login/JWT, refresh tokens, email verification, MFA, Serilog
+Not yet built: refresh tokens, email verification, MFA, Serilog
 (structured logging beyond the `ILogger` calls in the exception
 middleware), RabbitMQ, and the frontend (intentionally deferred, see
 Overview).
